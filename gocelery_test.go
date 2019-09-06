@@ -172,7 +172,7 @@ func TestRegister(t *testing.T) {
 
 	for _, celeryClient := range celeryClients {
 		celeryClient.Register(taskName, multiply)
-		task := celeryClient.worker.GetTask(taskName)
+		task := celeryClient.Worker.GetTask(taskName)
 		if !reflect.DeepEqual(reflect.ValueOf(multiply), reflect.ValueOf(task)) {
 			t.Errorf("registered task %v is different from received task %v", reflect.ValueOf(multiply), reflect.ValueOf(task))
 			return
