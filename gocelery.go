@@ -50,20 +50,20 @@ func (cc *CeleryClient) StopWorker() {
 
 // Delay gets asynchronous result
 func (cc *CeleryClient) Delay(task string, args ...interface{}) (*AsyncResult, error) {
-	celeryTask := getTaskMessage(task)
+	celeryTask := GetTaskMessage(task)
 	celeryTask.Args = args
 	return cc.delay(celeryTask)
 }
 
 // DelayKwargs gets asynchronous results with argument map
 func (cc *CeleryClient) DelayKwargs(task string, args map[string]interface{}) (*AsyncResult, error) {
-	celeryTask := getTaskMessage(task)
+	celeryTask := GetTaskMessage(task)
 	celeryTask.Kwargs = args
 	return cc.delay(celeryTask)
 }
 
 func (cc *CeleryClient) delay(task *TaskMessage) (*AsyncResult, error) {
-	defer releaseTaskMessage(task)
+	defer ReleaseTaskMessage(task)
 	encodedMessage, err := task.Encode()
 	if err != nil {
 		return nil, err

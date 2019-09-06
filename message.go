@@ -131,7 +131,7 @@ var taskMessagePool = sync.Pool{
 	},
 }
 
-func getTaskMessage(task string) *TaskMessage {
+func GetTaskMessage(task string) *TaskMessage {
 	msg := taskMessagePool.Get().(*TaskMessage)
 	msg.Task = task
 	msg.Args = make([]interface{}, 0)
@@ -140,7 +140,7 @@ func getTaskMessage(task string) *TaskMessage {
 	return msg
 }
 
-func releaseTaskMessage(v *TaskMessage) {
+func ReleaseTaskMessage(v *TaskMessage) {
 	v.reset()
 	taskMessagePool.Put(v)
 }
@@ -192,19 +192,19 @@ var resultMessagePool = sync.Pool{
 	},
 }
 
-func getResultMessage(val interface{}) *ResultMessage {
+func GetResultMessage(val interface{}) *ResultMessage {
 	msg := resultMessagePool.Get().(*ResultMessage)
 	msg.Result = val
 	return msg
 }
 
-func getReflectionResultMessage(val *reflect.Value) *ResultMessage {
+func GetReflectionResultMessage(val *reflect.Value) *ResultMessage {
 	msg := resultMessagePool.Get().(*ResultMessage)
 	msg.Result = GetRealValue(val)
 	return msg
 }
 
-func releaseResultMessage(v *ResultMessage) {
+func ReleaseResultMessage(v *ResultMessage) {
 	v.reset()
 	resultMessagePool.Put(v)
 }

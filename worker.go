@@ -57,7 +57,7 @@ func (w *CeleryWorker) StartWorker() {
 						log.Println(err)
 						continue
 					}
-					defer releaseResultMessage(resultMsg)
+					defer ReleaseResultMessage(resultMsg)
 
 					// push result to backend
 					err = w.backend.SetResult(taskMessage.ID, resultMsg)
@@ -123,7 +123,7 @@ func (w *CeleryWorker) RunTask(message *TaskMessage) (*ResultMessage, error) {
 		if err != nil {
 			return nil, err
 		}
-		return getResultMessage(val), err
+		return GetResultMessage(val), err
 	}
 	//log.Println("using reflection")
 
@@ -159,6 +159,6 @@ func runTaskFunc(taskFunc *reflect.Value, message *TaskMessage) (*ResultMessage,
 	if len(res) == 0 {
 		return nil, nil
 	}
-	//defer releaseResultMessage(resultMessage)
-	return getReflectionResultMessage(&res[0]), nil
+	//defer ReleaseResultMessage(resultMessage)
+	return GetReflectionResultMessage(&res[0]), nil
 }

@@ -8,9 +8,9 @@ import (
 )
 
 func makeCeleryMessage() (*CeleryMessage, error) {
-	taskMessage := getTaskMessage("add")
+	taskMessage := GetTaskMessage("add")
 	taskMessage.Args = []interface{}{rand.Intn(10), rand.Intn(10)}
-	defer releaseTaskMessage(taskMessage)
+	defer ReleaseTaskMessage(taskMessage)
 	encodedTaskMessage, err := taskMessage.Encode()
 	if err != nil {
 		return nil, err
