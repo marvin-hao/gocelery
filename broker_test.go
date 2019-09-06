@@ -15,7 +15,7 @@ func makeCeleryMessage() (*CeleryMessage, error) {
 	if err != nil {
 		return nil, err
 	}
-	return getCeleryMessage(encodedTaskMessage), nil
+	return GetCeleryMessage(encodedTaskMessage), nil
 }
 
 // test all brokers
@@ -33,7 +33,7 @@ func TestSend(t *testing.T) {
 	if err != nil || celeryMessage == nil {
 		t.Errorf("failed to construct celery message: %v", err)
 	}
-	defer releaseCeleryMessage(celeryMessage)
+	defer ReleaseCeleryMessage(celeryMessage)
 	err = broker.SendCeleryMessage(celeryMessage)
 	if err != nil {
 		t.Errorf("failed to send celery message to broker: %v", err)
@@ -63,7 +63,7 @@ func TestGet(t *testing.T) {
 	if err != nil || celeryMessage == nil {
 		t.Errorf("failed to construct celery message: %v", err)
 	}
-	defer releaseCeleryMessage(celeryMessage)
+	defer ReleaseCeleryMessage(celeryMessage)
 	jsonBytes, err := json.Marshal(celeryMessage)
 	if err != nil {
 		t.Errorf("failed to marshal celery message: %v", err)
@@ -91,7 +91,7 @@ func TestSendGet(t *testing.T) {
 		if err != nil || celeryMessage == nil {
 			t.Errorf("failed to construct celery message: %v", err)
 		}
-		defer releaseCeleryMessage(celeryMessage)
+		defer ReleaseCeleryMessage(celeryMessage)
 		err = broker.SendCeleryMessage(celeryMessage)
 		if err != nil {
 			t.Errorf("failed to send celery message to broker: %v", err)

@@ -49,13 +49,13 @@ var celeryMessagePool = sync.Pool{
 	},
 }
 
-func getCeleryMessage(encodedTaskMessage string) *CeleryMessage {
+func GetCeleryMessage(encodedTaskMessage string) *CeleryMessage {
 	msg := celeryMessagePool.Get().(*CeleryMessage)
 	msg.Body = encodedTaskMessage
 	return msg
 }
 
-func releaseCeleryMessage(v *CeleryMessage) {
+func ReleaseCeleryMessage(v *CeleryMessage) {
 	v.reset()
 	celeryMessagePool.Put(v)
 }

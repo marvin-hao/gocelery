@@ -68,8 +68,8 @@ func (cc *CeleryClient) delay(task *TaskMessage) (*AsyncResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	celeryMessage := getCeleryMessage(encodedMessage)
-	defer releaseCeleryMessage(celeryMessage)
+	celeryMessage := GetCeleryMessage(encodedMessage)
+	defer ReleaseCeleryMessage(celeryMessage)
 	err = cc.broker.SendCeleryMessage(celeryMessage)
 	if err != nil {
 		return nil, err
