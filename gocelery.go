@@ -75,8 +75,8 @@ func (cc *CeleryClient) delay(task *TaskMessage) (*AsyncResult, error) {
 		return nil, err
 	}
 	return &AsyncResult{
-		taskID:  task.ID,
-		backend: cc.Backend,
+		TaskID:  task.ID,
+		Backend: cc.Backend,
 	}, nil
 }
 
@@ -95,8 +95,8 @@ type CeleryTask interface {
 
 // AsyncResult is pending result
 type AsyncResult struct {
-	taskID  string
-	backend CeleryBackend
+	TaskID  string
+	Backend CeleryBackend
 	result  *ResultMessage
 }
 
@@ -108,7 +108,7 @@ func (ar *AsyncResult) Get(timeout time.Duration) (interface{}, error) {
 	for {
 		select {
 		case <-timeoutChan:
-			err := fmt.Errorf("%v timeout getting result for %s", timeout, ar.taskID)
+			err := fmt.Errorf("%v timeout getting result for %s", timeout, ar.TaskID)
 			return nil, err
 		case <-ticker.C:
 			val, err := ar.AsyncGet()
@@ -126,7 +126,7 @@ func (ar *AsyncResult) AsyncGet() (interface{}, error) {
 		return ar.result.Result, nil
 	}
 	// process
-	val, err := ar.backend.GetResult(ar.taskID)
+	val, err := ar.Backend.GetResult(ar.TaskID)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +145,7 @@ func (ar *AsyncResult) Ready() (bool, error) {
 	if ar.result != nil {
 		return true, nil
 	}
-	val, err := ar.backend.GetResult(ar.taskID)
+	val, err := ar.Backend.GetResult(ar.TaskID)
 	if err != nil {
 		return false, err
 	}
